@@ -1,2 +1,34 @@
-# Google App Engine generated folder
-appengine-generated/
+# Node modules and logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# n8n workflow JSON exports
+*.json
+
+# Environment variables
+.env
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+.pnpm-debug.log*
+
+# VSCode settings
+.vscode/
+
+# Mac system files
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+
+# Credentials file if any
+credentials.json
+
