@@ -1,0 +1,161 @@
+{
+  "name": "TravelGenie",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        192
+      ],
+      "id": "d44e0440-2323-4375-871e-7c2cb27ff771",
+      "webhookId": "f76825aa-de20-4562-9290-aff33aa4bf13",
+      "credentials": {
+        "telegramApi": {
+          "id": "oSSzRbCoN3Q6fhMJ",
+          "name": "Travel"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{`You are a travel planner agent. Plan a trip itinerary based on the user's input: ${$json[\"message\"][\"text\"]}`}}",
+        "options": {}
+      },
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        144,
+        192
+      ],
+      "id": "4c5f70d6-9fa2-44ef-b277-d5b629496990"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{$node[\"AI Agent\"].json[\"output\"]}}",
+        "additionalFields": {}
+      },
+      "name": "Telegram Send Message",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        496,
+        192
+      ],
+      "id": "6c21b7ee-1779-4c93-a16f-d5c0ab7f773d",
+      "webhookId": "3fa315c2-ed8a-4ff4-8ad8-7deed1d83298",
+      "credentials": {
+        "telegramApi": {
+          "id": "oSSzRbCoN3Q6fhMJ",
+          "name": "Travel"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        152,
+        416
+      ],
+      "id": "cbbd9398-118f-4064-9356-aad1cb6b5342",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "pNowJHkNLIyTSaui",
+          "name": "new"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{$json[\"message\"][\"chat\"][\"id\"]}}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        280,
+        416
+      ],
+      "id": "f45b61f0-934e-4ccd-a3ed-0d4f62f9ef54",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Telegram Send Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0355a679-80b7-41db-a5ca-00d0158c0b70",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2143bbab0046a29ff233d0225fd33fbe065863ee6490e9e4402496708a049faa"
+  },
+  "id": "4PuBMG6l7iIdymFS",
+  "tags": []
+}
