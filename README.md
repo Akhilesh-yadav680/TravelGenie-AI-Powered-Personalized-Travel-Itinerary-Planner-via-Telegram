@@ -9,6 +9,9 @@ TravelGenie is an AI-powered travel planning agent that interacts through Telegr
 - Memory buffer for context-aware conversations.
 - Sends travel plans and responses directly through Telegram messages.
 - Built on n8n automation platform using custom AI agent nodes.
+### Sample Usage
+
+![TravelGenie-AI-Powered-Personalized-Travel-Itinerary-Planner-via-Telegram](sample.png)
 
 ## Architecture
 
